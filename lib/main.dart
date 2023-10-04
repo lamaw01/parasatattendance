@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'static/color_static.dart';
-import 'view/home_view.dart';
+import 'view/loading_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: false,
         // primarySwatch: ColorStatic.kMainColor,
       ),
-      home: const HomeView(),
+      home: const LoadingView(),
     );
   }
 }

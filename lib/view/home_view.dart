@@ -4,11 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:parasatattendance/model/qr_model.dart';
-import 'package:wakelock/wakelock.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
+import '../data/app_version_riverpod.dart';
 import '../data/insert_log_riverpod.dart';
+import '../data/latest_event_riverpod.dart';
 import '../data/mobile_scanner_riverpod.dart';
 import '../data/parsed_qr_riverpod.dart';
+import '../service/dialog_service.dart';
 import '../service/toast_service.dart';
 import '../widget/camera_border_widget.dart';
 import '../widget/loading_widget.dart';
@@ -23,7 +26,7 @@ class HomeView extends ConsumerStatefulWidget {
 class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
-    Wakelock.enable();
+    WakelockPlus.enable();
 
     const String title = 'Parasat Attendance';
     const double iconSplash = 26.0;
@@ -33,6 +36,22 @@ class _HomeViewState extends ConsumerState<HomeView> {
       appBar: AppBar(
         title: const Text(title),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            iconSize: 30.0,
+            splashRadius: iconSplash,
+            onPressed: () {
+              ref.read(appPackageInfoFutureProvider.future).then((version) {
+                ref.read(latestEventFutureProvider.future).then(
+                  (event) {
+                    DialogService().appVersionDialog(context,
+                        title: 'Attendance ${version.version}',
+                        event: event.eventName);
+                  },
+                );
+              });
+            },
+          ),
           IconButton(
             splashRadius: iconSplash,
             icon: ValueListenableBuilder(

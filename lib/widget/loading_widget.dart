@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:parasatattendance/static/color_static.dart';
 
 class LoadingWidget extends StatelessWidget {
   const LoadingWidget({super.key});
@@ -21,7 +22,7 @@ class LoadingWidget extends StatelessWidget {
           ),
           SizedBox(width: 2.5),
           SpinKitFadingCircle(
-            color: Colors.white,
+            color: ColorStatic.kMainColor,
             size: 75.0,
           ),
         ],

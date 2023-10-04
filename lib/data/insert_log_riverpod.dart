@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../model/log_model.dart';
 import '../model/qr_model.dart';
-import 'dio_service_rivierpod.dart';
+import 'dio_service_riverpod.dart';
 
 final insertLogFutureProvider =
     FutureProvider.family.autoDispose<LogModel, String>(

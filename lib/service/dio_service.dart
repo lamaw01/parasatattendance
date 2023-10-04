@@ -3,10 +3,14 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
+import '../model/event_model.dart';
 import '../model/log_model.dart';
+import '../model/version_model.dart';
 
 class DioService {
   static const String _serverUrl = 'http://103.62.153.74:53000/attendance_api';
+
+  static const String downloadLink = '$_serverUrl/download/attendance.apk';
 
   final _dio = Dio(
     BaseOptions(
@@ -27,5 +31,17 @@ class DioService {
     );
     debugPrint(response.data.toString());
     return logModelFromJson(json.encode(response.data));
+  }
+
+  Future<VersionModel> getAppVersion() async {
+    Response response = await _dio.get('/get_app_version.php');
+    debugPrint(response.data.toString());
+    return versionModelFromJson(json.encode(response.data));
+  }
+
+  Future<EventModel> getLatestEvent() async {
+    Response response = await _dio.get('/get_latest_event.php');
+    debugPrint(response.data.toString());
+    return eventModelFromJson(json.encode(response.data));
   }
 }
