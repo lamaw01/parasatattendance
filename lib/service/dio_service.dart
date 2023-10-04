@@ -8,13 +8,13 @@ import '../model/log_model.dart';
 import '../model/version_model.dart';
 
 class DioService {
-  static const String _serverUrl = 'http://103.62.153.74:53000/attendance_api';
+  static const String _serverUrl = 'http://103.62.153.74:53000';
 
   static const String downloadLink = '$_serverUrl/download/attendance.apk';
 
   final _dio = Dio(
     BaseOptions(
-      baseUrl: _serverUrl,
+      baseUrl: '$_serverUrl/attendance_api',
       connectTimeout: const Duration(seconds: 5),
       receiveTimeout: const Duration(seconds: 10),
       headers: <String, String>{
