@@ -28,7 +28,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
   Widget build(BuildContext context) {
     WakelockPlus.enable();
 
-    const String title = 'Parasat Attendance';
+    const String title = 'UC-1 Attendance';
     const double iconSplash = 26.0;
     final MobileScannerController camera = ref.read(mobileScannerProvider);
 
