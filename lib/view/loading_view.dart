@@ -1,13 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:parasatattendance/view/home_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../data/app_version_database_riverpod.dart';
-import '../data/app_version_riverpod.dart';
+import '../data/check_version_riverpod.dart';
 import '../service/dio_service.dart';
 import '../static/color_static.dart';
 
@@ -22,23 +19,22 @@ class _LoadingViewState extends ConsumerState<LoadingView> {
   @override
   void initState() {
     super.initState();
-    ref.read(appPackageInfoFutureProvider.future).then((data1) {
-      ref.read(appVersionFutureProvider.future).then((data2) {
-        final packageVersion = data1.version.replaceAll(".", "").trim();
-        final databaseVersion = data2.version.replaceAll(".", "").trim();
-        log('${data1.version} ${data2.version}');
-        if (int.parse(packageVersion) < int.parse(databaseVersion)) {
-          newVersionDialog(
-              packageVersion: data1.version, databaseVersion: data2.version);
-        } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => const HomeView(),
-            ),
-          );
-        }
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await ref.read(appUpdatedProvider.notifier).getDatabaseVersion();
+      final appUpdated = ref.read(appUpdatedProvider);
+      if (appUpdated.updated) {
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => const HomeView(),
+          ),
+        );
+      } else {
+        newVersionDialog(
+            packageVersion: appUpdated.localVersion,
+            databaseVersion: appUpdated.databaseVersion);
+      }
     });
   }
 
