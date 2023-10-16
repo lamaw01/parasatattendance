@@ -6,7 +6,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:parasatattendance/model/qr_model.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
-import '../data/app_version_riverpod.dart';
 import '../data/insert_log_riverpod.dart';
 import '../data/latest_event_riverpod.dart';
 import '../data/mobile_scanner_riverpod.dart';
@@ -171,16 +170,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
             icon: const Icon(Icons.info_outline),
             iconSize: 30.0,
             splashRadius: iconSplash,
-            onPressed: () {
-              ref.read(appPackageInfoFutureProvider.future).then((version) {
-                ref.read(latestEventFutureProvider.future).then(
-                  (event) {
-                    DialogService().appVersionDialog(context,
-                        title: 'Attendance ${version.version}',
-                        event: event.eventName);
-                  },
-                );
-              });
+            onPressed: () async {
+              await ref.read(latestEventProvider.notifier).getLatestEvent();
+              final latestEvent = ref.read(latestEventProvider);
+              // ignore: use_build_context_synchronously
+              DialogService().appVersionDialog(context,
+                  version: latestEvent.version, event: latestEvent.event);
             },
           ),
           IconButton(
