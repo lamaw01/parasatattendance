@@ -44,4 +44,24 @@ class DioService {
     debugPrint(response.data.toString());
     return eventModelFromJson(json.encode(response.data));
   }
+
+  Future<void> insertDeviceLog({
+    required String id,
+    required String logTime,
+    required String address,
+    required String latlng,
+    required String version,
+  }) async {
+    await _dio.post(
+      '/insert_device_log.php',
+      data: {
+        "device_id": id,
+        "log_time": logTime,
+        "address": address,
+        "latlng": latlng,
+        "version": version,
+        "app_name": 'attendance'
+      },
+    );
+  }
 }

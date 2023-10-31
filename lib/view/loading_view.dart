@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:parasatattendance/view/home_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../data/check_version_riverpod.dart';
+import '../data/address_riverpod.dart';
+import '../data/app_version.dart';
+import '../data/device_info_riverpod.dart';
 import '../service/dio_service.dart';
 import '../static/color_static.dart';
 
@@ -20,9 +22,12 @@ class _LoadingViewState extends ConsumerState<LoadingView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await ref.read(appUpdatedProvider.notifier).getDatabaseVersion();
-      final appUpdated = ref.read(appUpdatedProvider);
-      if (appUpdated.updated) {
+      await ref.read(addressProvider.notifier).getPosition();
+      await ref.read(appUpdatedProvider.notifier).getAppVersion();
+      await ref.read(deviceInfoProvider.notifier).getDeviceInfo();
+
+      final appUpdatedModel = ref.read(appUpdatedProvider);
+      if (appUpdatedModel.updated) {
         // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
@@ -32,8 +37,8 @@ class _LoadingViewState extends ConsumerState<LoadingView> {
         );
       } else {
         newVersionDialog(
-            packageVersion: appUpdated.localVersion,
-            databaseVersion: appUpdated.databaseVersion);
+            packageVersion: appUpdatedModel.localVersion,
+            databaseVersion: appUpdatedModel.databaseVersion);
       }
     });
   }
