@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +30,6 @@ class _LoadingViewState extends ConsumerState<LoadingView> {
 
       final appUpdatedModel = ref.read(appUpdatedProvider);
       if (appUpdatedModel.updated) {
-        // ignore: use_build_context_synchronously
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

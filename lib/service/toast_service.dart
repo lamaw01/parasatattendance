@@ -2,6 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 class ToastService {
+  Color bgToastColor(String message) {
+    switch (message) {
+      case 'Succesfully Logged!':
+        return Colors.green;
+      case 'Already Logged!':
+        return Colors.orange;
+      case 'Error Logging In':
+        return Colors.red;
+
+      default:
+        return Colors.white;
+    }
+  }
+
   Future<void> showToast(
     BuildContext context, {
     required String? name,
@@ -14,7 +28,7 @@ class ToastService {
         padding: const EdgeInsets.all(5.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
-          color: Colors.white,
+          color: bgToastColor(message),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,

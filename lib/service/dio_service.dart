@@ -8,7 +8,7 @@ import '../model/log_model.dart';
 import '../model/version_model.dart';
 
 class DioService {
-  static const String _serverUrl = 'http://103.62.153.74:53000';
+  static const String _serverUrl = 'https://konek.parasat.tv:53000/';
 
   static const String downloadLink = '$_serverUrl/download/attendance.apk';
 
